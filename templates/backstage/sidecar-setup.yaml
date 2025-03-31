@@ -1,0 +1,36 @@
+---
+containers:
+  - env:
+      - name: RCS_CONFIG_FILE
+        value: /app-root/config/rcsconfig.yaml
+      - name: RHDH_CONFIG_FILE
+        value: /app-root/config/sed.edit.RHDH_CONFIG_FILENAME
+    envFrom:
+      - secretRef:
+          name: provider-keys
+      - secretRef:
+          name: sed.edit.RHDH_SECRETS_NAME
+    image: sed.edit.RCS_IMAGE
+    name: road-core-sidecar
+    volumeMounts:
+      - mountPath: /app-root/config/rcsconfig.yaml
+        name: rcsconfig
+        subPath: rcsconfig.yaml
+      - mountPath: /app-root/config/provider-keys
+        name: provider-keys
+      - mountPath: /app-root/config/sed.edit.RHDH_CONFIG_FILENAME
+        name: sed.edit.RHDH_CONFIG_NAME
+        subPath: sed.edit.RHDH_CONFIG_FILENAME
+      - mountPath: /app-root/config/system_prompt.txt
+        name: system-prompt 
+        subPath: system_prompt.txt
+volumes:
+  - name: rcsconfig
+    configMap:
+      name: rcsconfig
+  - name: provider-keys
+    secret:
+      secretName: provider-keys
+  - name: system-prompt
+    configMap:
+        name: system-prompt

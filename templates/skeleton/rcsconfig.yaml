@@ -1,0 +1,22 @@
+llm_providers:
+  - name: <cluster-name>
+    type: openai
+    url: <https://my-model-url/v1>
+    credentials_path: config/provider-keys/<key.txt>
+    models:
+      - name: <model-name>
+      - name: <model-name-2-if-required>
+ols_config:
+  conversation_cache:
+    type: memory
+    memory:
+      max_entries: 1000
+  authentication_config:
+    module: "noop"
+  default_provider: <one of the above provider's name>
+  default_model: <one of model name from provider chosen as default>
+  query_validation_method: disabled
+dev_config:
+  enable_dev_ui: false
+  disable_auth: false
+  disable_tls: true
