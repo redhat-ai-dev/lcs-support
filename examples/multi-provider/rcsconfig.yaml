@@ -1,0 +1,28 @@
+llm_providers:
+  - name: first-provider-name
+    type: openai
+    url: https://first-url:my-port/v1
+    credentials_path: config/provider-keys/first-key.txt
+    models:
+      - name: my-model
+  - name: second-provider-name
+    type: openai
+    url: https://second-url:my-port/v1
+    credentials_path: config/provider-keys/second-key.txt
+    models:
+      - name: new-model
+      - name: third-model
+ols_config:
+  conversation_cache:
+    type: memory
+    memory:
+      max_entries: 1000
+  authentication_config:
+    module: "noop"
+  default_provider: second-provider-name
+  default_model: new-model
+  query_validation_method: disabled
+dev_config:
+  enable_dev_ui: false
+  disable_auth: false
+  disable_tls: true
