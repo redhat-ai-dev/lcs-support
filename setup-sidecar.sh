@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errexit
+set -o errtrace
+
 ROOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 
 echo "Sourcing values from $ROOTDIR/env/values ..."
@@ -82,6 +85,7 @@ configure_and_apply_resources() {
     
     echo "Patching Backstage CR ..."
     kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR"/tmp/backstage.yaml
+    echo "DONE."
 }
 
 cleanup() {
@@ -89,6 +93,7 @@ cleanup() {
 }
 
 env_var_checks
+trap cleanup ERR
 setup_editing_env
 apply_resources
 configure_and_apply_resources
