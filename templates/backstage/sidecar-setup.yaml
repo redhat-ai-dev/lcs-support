@@ -21,9 +21,6 @@ containers:
       - mountPath: /app-root/config/sed.edit.RHDH_CONFIG_FILENAME
         name: sed.edit.RHDH_CONFIG_NAME
         subPath: sed.edit.RHDH_CONFIG_FILENAME
-      - mountPath: /app-root/config/system_prompt.txt
-        name: system-prompt 
-        subPath: system_prompt.txt
 volumes:
   - name: rcsconfig
     configMap:
@@ -31,6 +28,3 @@ volumes:
   - name: provider-keys
     secret:
       secretName: provider-keys
-  - name: system-prompt
-    configMap:
-        name: system-prompt
