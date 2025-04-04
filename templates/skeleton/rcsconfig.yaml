@@ -1,11 +1,15 @@
 llm_providers:
+  - name: dummy
+    type: openai
+    url: https://dummy.com
+    credentials_path: config/provider-keys/dummy
+    models:
+      - name: dummymodel
   - name: <cluster-name>
     type: openai
     url: <https://my-model-url/v1>
     credentials_path: config/provider-keys/<key.txt>
-    models:
-      - name: <model-name>
-      - name: <model-name-2-if-required>
+    disable_model_check: true
 ols_config:
   conversation_cache:
     type: memory
@@ -13,10 +17,11 @@ ols_config:
       max_entries: 1000
   authentication_config:
     module: "noop"
-  default_provider: <one of the above provider's name>
-  default_model: <one of model name from provider chosen as default>
+  default_provider: dummy
+  default_model: dummymodel
   query_validation_method: disabled
 dev_config:
   enable_dev_ui: false
   disable_auth: false
   disable_tls: true
+  enable_system_prompt_override: true
