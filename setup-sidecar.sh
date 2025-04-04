@@ -40,10 +40,6 @@ apply_resources() {
     echo "Applying resources to $DEPLOYMENT_NAMESPACE namespace ..."
     cp "$ROOTDIR"/resources/rcsconfig.yaml "$ROOTDIR"/tmp/
     kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR"/resources/rcssecret.yaml
-    if [ "$USE_CUSTOM_PROMPT" == "true" ]; then
-        kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR"/resources/rcsprompt.yaml
-        yq '.ols_config.system_prompt_path = "config/system_prompt.txt"' -i "$ROOTDIR"/tmp/rcsconfig.yaml
-    fi
     kubectl create configmap rcsconfig --from-file="$ROOTDIR"/tmp/rcsconfig.yaml -n "$DEPLOYMENT_NAMESPACE"
 }
 
@@ -54,12 +50,6 @@ setup_editing_env() {
 }
 
 configure_and_apply_resources() {
-    # Remove prompt sections from sidecar setup if disabled or missing
-    if [ "$USE_CUSTOM_PROMPT" != "true" ]; then
-        yq -i '(.containers[].volumeMounts) |= map(select(.name != "system-prompt"))' "$ROOTDIR"/tmp/sidecar-setup.yaml
-        yq -i '(.volumes) |= map(select(.name != "system-prompt"))' "$ROOTDIR"/tmp/sidecar-setup.yaml
-    fi
-
     # Remove rhdh config file passing if disabled or missing
     if [ "$USE_RHDH_CONFIG" != "true" ]; then
         yq -i '(.containers[].env) |= map(select(.name != "RHDH_CONFIG_FILE"))' "$ROOTDIR"/tmp/sidecar-setup.yaml
