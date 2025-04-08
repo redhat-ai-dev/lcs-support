@@ -49,7 +49,6 @@ llm_providers:
   - name: dummy
     type: openai
     url: https://dummy.com
-    credentials_path: config/provider-keys/dummy
     models:
       - name: dummymodel
   - name: <cluster-name>
@@ -87,7 +86,6 @@ llm_providers:
   - name: dummy
     type: openai
     url: https://dummy.com
-    credentials_path: config/provider-keys/dummy
     models:
       - name: dummymodel
   - name: example-name
@@ -142,7 +140,6 @@ llm_providers:
   - name: dummy
     type: openai
     url: https://dummy.com
-    credentials_path: config/provider-keys/dummy
     models:
       - name: dummymodel
   - name: <cluster-name>
@@ -176,7 +173,6 @@ llm_providers:
   - name: dummy
     type: openai
     url: https://dummy.com
-    credentials_path: config/provider-keys/dummy
     models:
       - name: dummymodel
 ols_config:
