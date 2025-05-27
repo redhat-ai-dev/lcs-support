@@ -66,11 +66,17 @@ ols_config:
   default_provider: dummy
   default_model: dummymodel
   query_validation_method: llm
+  user_data_collection:
+    feedback_disabled: false
+    feedback_storage: "/app-root/tmp/data/feedback"
 dev_config:
   enable_dev_ui: false
   disable_auth: false
   disable_tls: true
   enable_system_prompt_override: true
+user_data_collector_config:
+  ingress_url: "https://example.ingress.com/upload"
+  user_agent: "example-agent"
 ```
 
 **query_validation_method** section is recommended to be set as **llm** to enable question validation. If you want to turn off the validation, set to **disabled**
@@ -105,11 +111,17 @@ ols_config:
   default_provider: dummy
   default_model: dummymodel
   query_validation_method: llm
+  user_data_collection:
+    feedback_disabled: false
+    feedback_storage: "/app-root/tmp/data/feedback"
 dev_config:
   enable_dev_ui: false
   disable_auth: false
   disable_tls: true
   enable_system_prompt_override: true
+user_data_collector_config:
+  ingress_url: "https://example.ingress.com/upload"
+  user_agent: "example-agent"
 ```
 
 For the purpose of this example I named my provider **example-name**, this name can be anything you want it to be. Keep note of it as it will be the provider name you pass when hitting RCS endpoints.
@@ -159,11 +171,17 @@ ols_config:
   default_provider: dummy
   default_model: dummymodel
   query_validation_method: llm
+  user_data_collection:
+    feedback_disabled: false
+    feedback_storage: "/app-root/tmp/data/feedback"
 dev_config:
   enable_dev_ui: false
   disable_auth: false
   disable_tls: true
   enable_system_prompt_override: true
+user_data_collector_config:
+  ingress_url: "https://example.ingress.com/upload"
+  user_agent: "example-agent"
 ```
 
 **query_validation_method** section is recommended to be set as **llm** to enable question validation. If you want to turn off the validation, set this value to **disabled**. Or you can set **questionValidation** in RHDH lightspeed config.
@@ -189,11 +207,17 @@ ols_config:
   default_provider: dummy
   default_model: dummymodel
   query_validation_method: llm
+  user_data_collection:
+    feedback_disabled: false
+    feedback_storage: "/app-root/tmp/data/feedback"
 dev_config:
   enable_dev_ui: false
   disable_auth: false
   disable_tls: true
   enable_system_prompt_override: true
+user_data_collector_config:
+  ingress_url: "https://example.ingress.com/upload"
+  user_agent: "example-agent"
 ```
 
 As for the `rcssecret.yaml` file, you are free to leave that unedited as it won't be used.
