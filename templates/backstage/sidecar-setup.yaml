@@ -23,6 +23,8 @@ containers:
       - mountPath: /app-root/config/sed.edit.RHDH_CONFIG_FILENAME
         name: sed.edit.RHDH_CONFIG_NAME
         subPath: sed.edit.RHDH_CONFIG_FILENAME
+      - mountPath: /app-root/tmp/data/feedback
+        name: shared-data
 volumes:
   - name: rcsconfig
     configMap:
@@ -30,3 +32,5 @@ volumes:
   - name: provider-keys
     secret:
       secretName: provider-keys
+  - name: shared-data
+    emptyDir: {}
