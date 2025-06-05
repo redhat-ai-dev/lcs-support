@@ -9,8 +9,6 @@ containers:
         value: rhdh
     envFrom:
       - secretRef:
-          name: provider-keys
-      - secretRef:
           name: sed.edit.RHDH_SECRETS_NAME
     image: sed.edit.RCS_IMAGE
     name: road-core-sidecar
