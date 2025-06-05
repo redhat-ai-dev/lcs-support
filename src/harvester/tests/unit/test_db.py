@@ -1,6 +1,5 @@
-# tests/unit/test_postgresdb.py
 from unittest.mock import patch, MagicMock
-from runner.utils.db import PostgresDB  # adjust import path
+from runner.utils.db import PostgresDB
 
 @patch("runner.utils.db.ConnectionPool")
 def test_pool_creation_success(mock_connection_pool):

@@ -1,5 +1,3 @@
-# test_watcher.py
-
 import os
 import json
 import pytest
