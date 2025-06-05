@@ -23,3 +23,11 @@ generate-resources:
 .PHONY: build-harvester
 build-harvester: 
 	podman build --platform=$(PLATFORM) -t $(FULL_NAME) -f src/harvester/Containerfile
+
+.PHONY: remove-harvester
+remove-harvester:
+	bash ./scripts/remove-harvester.sh
+
+.PHONY: remove-postgres
+remove-postgres:
+	bash ./scripts/remove-postgres.sh

@@ -269,3 +269,15 @@ make deploy-harvester
 ```
 
 You can find information about the harvester itself in [src/harvester/README.md](./src/harvester/README.md).
+
+### Removing Resources
+
+You can remove the resources deployed for the harvester by running the following in order:
+
+```
+make remove-harvester
+```
+
+```
+make remove-postgres
+```
