@@ -1,5 +1,5 @@
 TAG ?= latest
-IMAGE_NAME ?= quay.io/rh-ee-jdubrick/feedback-harvester
+IMAGE_NAME ?= quay.io/redhat-ai-dev/feedback-harvester
 FULL_NAME = $(IMAGE_NAME):$(TAG)
 PLATFORM ?= linux/amd64
 
