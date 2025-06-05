@@ -14,7 +14,15 @@ This setup script was tested with [Red Hat Developer Hub (RHDH) v1.4](https://do
 - v4.16
 - v4.17
 
-## Usage
+## Scripts
+
+This repository holds multiple setup-scripts you can use to deploy resources.
+
+1. [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar)
+2. [PostgreSQL Database](#postgresql-database) (Dependent on script #1)
+3. [Feedback Harvester Sidecar](#feedback-harvester-sidecar) (Dependent on script #1 *and* #2)
+
+## Road-Core/Service Backend Sidecar
 
 ### Step 1
 
@@ -25,7 +33,7 @@ To generate your own local copy of:
 Run:
 
 ```
-bash ./scripts/generate-resources.sh
+make generate-resources
 ```
 
 To obtain your own local copy of the required environment variable file:
@@ -228,13 +236,31 @@ Before moving to the next step you will need to ensure all environment variables
 
 To add the sidecar to your Red Hat Developer Hub (RHDH) Pod, first ensure you are logged into your cluster and then run:
 ```
-bash ./setup-sidecar.sh
+make deploy-sidecar
 ```
 
-## Examples
+### Examples
 
 You can view the following example use-cases below:
 
 - [Single LLM Provider](./examples/single-provider/)
 - [Multiple LLM Providers](./examples/multi-provider/)
 - [RHDH Config Env Enabled](./examples/rhdh-config-enabled/)
+
+## PostgreSQL Database
+
+To spin up a PostgreSQL database *and* have the required Secret for logging in added to your Red Hat Developer Hub (RHDH) namespace you must ensure that RHDH is installed and you have followed the setup instructions above in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar).
+
+```
+make deploy-postgres
+```
+
+## Feedback Harvester Sidecar
+
+This Python application enables our local (to the cluster) storage of feedback data received into a PostgreSQL database. You can find documentation around this app in [src/harvester/README.md](./src/harvester/README.md).
+
+To deploy this sidecar you will first need to ensure that Red Hat Developer Hub is installed and that you have followed the instructions in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar) as it works in conjunction with that sidecar.
+
+```
+make deploy-harvester
+```

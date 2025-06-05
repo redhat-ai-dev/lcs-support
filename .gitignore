@@ -1,3 +1,13 @@
 env/values
+env/harvester-values.sh
 tmp
+tmp-harvester
+tmp-postgres
 resources
+__pycache__/
+*.pyc
+.pdm-python
+.python-version
+.venv
+.pytest_cache
+.pdm-build
