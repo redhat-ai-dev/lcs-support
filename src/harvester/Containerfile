@@ -1,0 +1,29 @@
+FROM registry.access.redhat.com/ubi9/ubi-minimal
+
+USER root
+
+WORKDIR /app-root
+
+RUN microdnf install -y --nodocs --setopt=keepcache=0 --setopt=tsflags=nodocs \
+    python3.11 python3.11-devel python3.11-pip
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONCOERCECLOCALE=0 \
+    PYTHONUTF8=1 \
+    PYTHONIOENCODING=UTF-8 \
+    LANG=en_US.UTF-8 \
+    PIP_NO_CACHE_DIR=on
+
+
+COPY main.py pyproject.toml ./
+
+COPY runner ./runner
+
+RUN pip3.11 install --no-cache-dir .
+
+ENV PYTHONPATH=/app-root
+
+CMD ["python3.11", "main.py"]
+
+USER 1001
