@@ -16,6 +16,10 @@ This setup script was tested with [Red Hat Developer Hub (RHDH) v1.4](https://do
 
 ## Scripts
 
+> [!Warning]
+> Currently these scripts will *only* deploy resources. Running them multiple times in a row will result in unforeseen consequences due to the repetitive addition to the Backstage CR and more.
+
+
 This repository holds multiple setup-scripts you can use to deploy resources.
 
 1. [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar)
