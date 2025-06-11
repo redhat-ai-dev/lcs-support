@@ -254,7 +254,7 @@ You can view the following example use-cases below:
 
 To enable the collection of feedback data we must deploy both a harvester sidecar and a postgreSQL database.
 
-You will first need to ensure that the above steps in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar) have been completed as this deployment builds ontop of that. From there you can:
+You will first need to ensure that the above steps in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar) have been completed as this deployment builds on top of that. From there you can:
 
 1. Create your copy of the necessary values
    1. Create a copy of [default-harvester-values](./env/default-harvester-values) in [/env](./env/) named **harvester-values.sh**.
