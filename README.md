@@ -257,7 +257,7 @@ To enable the collection of feedback data we must deploy both a harvester sideca
 You will first need to ensure that the above steps in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar) have been completed as this deployment builds on top of that. From there you can:
 
 1. Create your copy of the necessary values
-   1. Create a copy of [default-harvester-values](./env/default-harvester-values) in [/env](./env/) named **harvester-values.sh**.
+   1. Create a copy of [default-harvester-values](./env/default-harvester-values) in [/env](./env/) named **harvester-values**.
    2. Fill out the environment variables as instructed in the file.
 2. Run the following command to deploy postgres and add the required secret to your Red Hat Developer Hub (RHDH) namespace:
 ```

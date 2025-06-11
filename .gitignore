@@ -1,5 +1,5 @@
 env/values
-env/harvester-values.sh
+env/harvester-values
 tmp
 tmp-harvester
 tmp-postgres

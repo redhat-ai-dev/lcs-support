@@ -7,7 +7,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 echo "Sourcing values from $ROOTDIR/env/harvester-values ..."
-source "$ROOTDIR"/env/harvester-values.sh
+source "$ROOTDIR"/env/harvester-values
 
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
