@@ -1,0 +1,9 @@
+{
+    "user_id": "00000000-0000-0000-0000-000000000000", 
+    "timestamp": "2025-06-03 19:17:00.388662", 
+    "conversation_id": "37c81206-31eb-4f81-8cfe-481565ba6b4e", 
+    "user_question": "third question", 
+    "llm_response": "third response", 
+    "sentiment": 1, 
+    "user_feedback": "my third feedback"
+}

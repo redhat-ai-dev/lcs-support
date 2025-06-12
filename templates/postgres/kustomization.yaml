@@ -1,0 +1,9 @@
+resources:
+  - namespace/namespace.yaml
+  - secret/secret.yaml
+  - base/deployment.yaml
+  - base/pvc.yaml
+  - base/service.yaml
+  - post-deploy-config/job.yaml
+
+namespace: dev-postgres

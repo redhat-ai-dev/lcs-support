@@ -3,7 +3,8 @@
 set -o errexit
 set -o errtrace
 
-ROOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values

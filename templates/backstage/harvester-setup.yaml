@@ -1,0 +1,31 @@
+---
+containers:
+  - env:
+      - name: PGUSER
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: user
+      - name: PGPASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: password
+      - name: PGDATABASE
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: db
+      - name: PGHOST
+        value: postgres-svc.dev-postgres.svc.cluster.local
+      - name: PGPORT
+        value: 5432
+      - name: FEEDBACK_DIRECTORY
+        value: /app-root/tmp/data/feedback
+      - name: FETCH_FREQUENCY
+        value: sed.edit.FETCH_FREQUENCY
+    image: sed.edit.HARVESTER_IMAGE
+    name: feedback-harvester
+    volumeMounts:
+      - mountPath: /app-root/tmp/data/feedback
+        name: shared-data

@@ -1,4 +1,4 @@
-# Road-Core/Service Sidecar Setup
+# Road-Core/Service Support
 
 ## Requirements
 
@@ -14,7 +14,18 @@ This setup script was tested with [Red Hat Developer Hub (RHDH) v1.4](https://do
 - v4.16
 - v4.17
 
-## Usage
+## Scripts
+
+> [!Warning]
+> Currently these scripts will *only* deploy resources. Running them multiple times in a row will result in unforeseen consequences due to the repetitive addition to the Backstage CR and more.
+
+
+This repository holds multiple setup-scripts you can use to deploy resources.
+
+1. [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar)
+2. [Feedback Harvester](#feedback-harvester)
+
+## Road-Core/Service Backend Sidecar
 
 ### Step 1
 
@@ -25,7 +36,7 @@ To generate your own local copy of:
 Run:
 
 ```
-bash ./scripts/generate-resources.sh
+make generate-resources
 ```
 
 To obtain your own local copy of the required environment variable file:
@@ -228,13 +239,45 @@ Before moving to the next step you will need to ensure all environment variables
 
 To add the sidecar to your Red Hat Developer Hub (RHDH) Pod, first ensure you are logged into your cluster and then run:
 ```
-bash ./setup-sidecar.sh
+make deploy-sidecar
 ```
 
-## Examples
+### Examples
 
 You can view the following example use-cases below:
 
 - [Single LLM Provider](./examples/single-provider/)
 - [Multiple LLM Providers](./examples/multi-provider/)
 - [RHDH Config Env Enabled](./examples/rhdh-config-enabled/)
+
+## Feedback Harvester
+
+To enable the collection of feedback data we must deploy both a harvester sidecar and a postgreSQL database.
+
+You will first need to ensure that the above steps in [Road-Core/Service Backend Sidecar](#road-coreservice-backend-sidecar) have been completed as this deployment builds on top of that. From there you can:
+
+1. Create your copy of the necessary values
+   1. Create a copy of [default-harvester-values](./env/default-harvester-values) in [/env](./env/) named **harvester-values**.
+   2. Fill out the environment variables as instructed in the file.
+2. Run the following command to deploy postgres and add the required secret to your Red Hat Developer Hub (RHDH) namespace:
+```
+make deploy-postgres
+```
+3. After postgres is deployed you can run the following to add the feedback harvester sidecar to your Backstage CR:
+```
+make deploy-harvester
+```
+
+You can find information about the harvester itself in [src/harvester/README.md](./src/harvester/README.md).
+
+### Removing Resources
+
+You can remove the resources deployed for the harvester by running the following in order:
+
+```
+make remove-harvester
+```
+
+```
+make remove-postgres
+```

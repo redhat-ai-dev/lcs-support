@@ -1,0 +1,16 @@
+[build-system]
+requires = ["pdm-backend >= 2.4.0"]
+build-backend = "pdm.backend"
+
+[project]
+name = "feedback-harvester"
+version = "0.1.0"
+description = "A simple data harvester."
+dependencies = [
+    "psycopg[binary,pool]>=3.1",
+    "pytest >= 8.2.0"
+]
+requires-python = ">=3.11.0"
+
+[tool.setuptools]
+packages = ["runner"]

@@ -1,0 +1,7 @@
+{
+    "user_id": "00000000-0000-0000-0000-000000000000", 
+    "timestamp": "2025-06-03 19:17:00.388662",
+    "llm_response": "third response", 
+    "sentiment": 1, 
+    "user_feedback": "my third feedback"
+}
