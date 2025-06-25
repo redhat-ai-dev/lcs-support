@@ -23,16 +23,15 @@ setup_editing_env() {
 
 remove_container() {
 if yq e ".spec.deployment.patch.spec.template.spec.containers[].name == \"$CONTAINER_NAME\"" "$ROOTDIR"/tmp/backstage.yaml | grep -q true; then
-    echo "Container '$CONTAINER_NAME' found. Removing..."
+    echo "Container '$CONTAINER_NAME' found, removing ..."
 
     yq e "del(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == \"$CONTAINER_NAME\"))" "$ROOTDIR"/tmp/backstage.yaml > "$ROOTDIR"/tmp/backstage-updated.yaml
 
-    # Apply the updated CR
     kubectl apply -f "$ROOTDIR"/tmp/backstage-updated.yaml
 
-    echo "Container '$CONTAINER_NAME' removed and resource updated."
+    echo "Container '$CONTAINER_NAME' removed and resource updated ..."
 else
-    echo "Container '$CONTAINER_NAME' not found. No changes made."
+    echo "Container '$CONTAINER_NAME' not found. No changes made ..."
 fi
 }
 

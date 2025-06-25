@@ -35,15 +35,20 @@ setup_editing_env() {
     cp -r "$ROOTDIR"/templates/postgres/* "$ROOTDIR"/tmp-postgres/
 }
 
-configure_resources() {
+configure_and_apply_resources() {
+    if kubectl get namespace dev-postgres >/dev/null 2>&1; then
+        echo "Namespace 'dev-postgres' already exists, skipping resource creation ..."
+        return
+    fi
+    echo "Configuring Postgres resources ..."
     sed -i "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
     sed -i "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
     sed -i "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-}
 
-apply_resources() {
+    echo "Applying Postgres resources ..."
     kubectl apply -k "$ROOTDIR"/tmp-postgres
     kubectl apply -n "$RHDH_NAMESPACE" -f "$ROOTDIR/tmp-postgres/secret/secret.yaml"
+    echo "Successfully applied Postgres resources ..."
 }
 
 cleanup() {
@@ -53,6 +58,5 @@ cleanup() {
 env_var_checks
 trap cleanup ERR
 setup_editing_env
-configure_resources
-apply_resources
+configure_and_apply_resources
 cleanup
