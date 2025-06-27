@@ -24,6 +24,10 @@ generate-resources:
 build-harvester: 
 	podman build --platform=$(PLATFORM) -t $(FULL_NAME) -f src/harvester/Containerfile
 
+.PHONY: remove-sidecar
+remove-sidecar:
+	bash ./scripts/remove-sidecar.sh
+
 .PHONY: remove-harvester
 remove-harvester:
 	bash ./scripts/remove-harvester.sh
@@ -31,3 +35,6 @@ remove-harvester:
 .PHONY: remove-postgres
 remove-postgres:
 	bash ./scripts/remove-postgres.sh
+
+.PHONY: remove-all
+remove-all: remove-harvester remove-postgres remove-sidecar

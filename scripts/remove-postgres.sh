@@ -13,7 +13,6 @@ source "$ROOTDIR"/env/harvester-values
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
 
-# Configuration
 NAMESPACE_TO_DELETE="dev-postgres"
 SECRET_TO_DELETE="postgres-secret"
 

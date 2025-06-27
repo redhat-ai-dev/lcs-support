@@ -37,7 +37,13 @@ setup_editing_env() {
     kubectl get -n "$RHDH_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp-harvester/backstage.yaml
 }
 
-configure_resources() {
+configure_and_apply_resources() {
+    if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "feedback-harvester"))' "$ROOTDIR"/tmp-harvester/backstage.yaml >/dev/null 2>&1; then
+        echo "Harvester container 'feedback-harvester' already present in Backstage CR, skipping patch ..."
+        echo "[NOTICE] If you have updated the image, you will need to restart the Backstage Pod to trigger a pull of the new image."
+        return
+    fi
+
     if [ -z "$FETCH_FREQUENCY" ]; then
         yq -i '(.containers[].env) |= map(select(.name != "FETCH_FREQUENCY"))' "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
     else
@@ -46,16 +52,13 @@ configure_resources() {
     
     sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
 
-    # add containers and volumes values to backstage CR
     yq eval -i '
     .spec.deployment.patch.spec.template.spec.containers += load("'"${ROOTDIR}/tmp-harvester/harvester-setup.yaml"'").containers
     ' "$ROOTDIR"/tmp-harvester/backstage.yaml
-}
 
-apply_resources() {
     echo "Patching Backstage CR ..."
     kubectl apply -n "$RHDH_NAMESPACE" -f "$ROOTDIR"/tmp-harvester/backstage.yaml
-    echo "DONE."
+    echo "Successfully patched Backstage CR ..."
 }
 
 cleanup() {
@@ -65,6 +68,5 @@ cleanup() {
 env_var_checks
 trap cleanup ERR
 setup_editing_env
-configure_resources
-apply_resources
+configure_and_apply_resources
 cleanup
