@@ -40,6 +40,7 @@ setup_editing_env() {
 configure_and_apply_resources() {
     if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "feedback-harvester"))' "$ROOTDIR"/tmp-harvester/backstage.yaml >/dev/null 2>&1; then
         echo "Harvester container 'feedback-harvester' already present in Backstage CR, skipping patch ..."
+        echo "[NOTICE] If you have updated the image, you will need to restart the Backstage Pod to trigger a pull of the new image."
         return
     fi
 

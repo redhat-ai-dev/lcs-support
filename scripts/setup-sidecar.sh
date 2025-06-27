@@ -48,12 +48,14 @@ apply_resources() {
     cp "$ROOTDIR"/resources/rcsconfig.yaml "$ROOTDIR"/tmp/
     if kubectl get secret provider-keys -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
         echo "Secret 'provider-keys' already exists, skipping creation ..."
+        echo "[NOTICE] If you have updated the Secret, you will need to run 'make remove-sidecar' and then 'make deploy-sidecar' to apply the changes."
     else
         kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR"/resources/rcssecret.yaml
     fi
 
     if kubectl get configmap rcsconfig -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
         echo "ConfigMap 'rcsconfig' already exists, skipping creation ..."
+        echo "[NOTICE] If you have updated the ConfigMap, you will need to run 'make remove-sidecar' and then 'make deploy-sidecar' to apply the changes."
     else
         kubectl create configmap rcsconfig --from-file="$ROOTDIR"/tmp/rcsconfig.yaml -n "$DEPLOYMENT_NAMESPACE"
     fi
@@ -62,6 +64,7 @@ apply_resources() {
 configure_and_apply_resources() {
     if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "road-core-sidecar"))' "$ROOTDIR"/tmp/backstage.yaml >/dev/null 2>&1; then
         echo "Sidecar container 'road-core-sidecar' already present in Backstage CR, skipping patch ..."
+        echo "[NOTICE] If you have updated the image, you will need to restart the Backstage Pod to trigger a pull of the new image."
         return
     fi
 

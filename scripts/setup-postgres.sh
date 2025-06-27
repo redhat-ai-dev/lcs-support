@@ -38,6 +38,7 @@ setup_editing_env() {
 configure_and_apply_resources() {
     if kubectl get namespace dev-postgres >/dev/null 2>&1; then
         echo "Namespace 'dev-postgres' already exists, skipping resource creation ..."
+        echo "[NOTICE] If you have updated the Postgres resources, you will need to run 'make remove-postgres' and then 'make deploy-postgres' to apply the changes."
         return
     fi
     echo "Configuring Postgres resources ..."
