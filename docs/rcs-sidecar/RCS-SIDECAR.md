@@ -63,15 +63,19 @@ user_data_collector_config:
   user_agent: "example-agent"
 ```
 
-**query_validation_method** section is recommended to be set as **llm** to enable question validation. If you want to turn off the validation, set to **disabled**
+The `query_validation_method` section is recommended to be set as `llm` to enable question validation. If you want to turn off the validation, set to `disabled`.
 
-You only need to edit the **llm_providers** section of this file. Due to restrictions by road-core/service we **must** keep the dummy provider defined, as well as having the dummy provider + model as the default.
+After setting the `query_validation_method` to your desired value, you only need to edit the `llm_providers` section of this file. Due to restrictions by road-core/service we **must** keep the dummy provider defined, as well as having the dummy provider + model as the default.
 
-For example if I have a provider I wish to add with the following information:
-- Url: https://my-example-url.com:8080
-- Token: my-example-token
+**Example:**
 
-I would add it to the file and have the following result:
+To add the following provider:
+```
+Url: https://my-example-url.com:8080
+Token: my-example-token
+```
+
+The `rcsconfig.yaml` file should look like:
 
 ```
 llm_providers:
@@ -108,11 +112,9 @@ user_data_collector_config:
   user_agent: "example-agent"
 ```
 
-For the purpose of this example I named my provider **example-name**, this name can be anything you want it to be. Keep note of it as it will be the provider name you pass when hitting RCS endpoints.
+In the above example, the provider was named `example-name`. This name can be anything you want it to be. It is important to keep note of this name as it will be the provider name you pass when hitting RCS endpoints. In addition, the `credentials_path` field was populated with `config/provider-keys/example.txt`. All provider keys should be added to the generated `rcssecrets.yaml` file that was created in [Step 1](#step-1).
 
-Additionally, you may notice that `credentials_path` was populated with `config/provider-keys/example.txt`. All provider keys will be added to the generated `rcssecrets.yaml` file created in [Step 1](#step-1).
-
-You can view the contents of that file for this example below:
+**Example:**
 
 ```
 kind: Secret
@@ -168,7 +170,14 @@ user_data_collector_config:
   user_agent: "example-agent"
 ```
 
-**query_validation_method** section is recommended to be set as **llm** to enable question validation. If you want to turn off the validation, set this value to **disabled**. Or you can set **questionValidation** in RHDH lightspeed config.
+The `query_validation_method` section is recommended to be set as `llm` to enable question validation. If you want to turn off the validation, set to `disabled`. If desired, you can also set `questionValidation` in your Red Hat Developer Hub (RHDH) Lightspeed configuration.
+
+```
+lightspeed:
+  questionValidation: true
+  servers:
+    ...
+```
 
 If you intend on only obtaining LLM provider information from your RHDH config you don't need to set anything in `rcsconfig.yaml`. You will however need to *remove* the templated cluster information.
 
