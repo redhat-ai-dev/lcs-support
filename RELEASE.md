@@ -13,6 +13,11 @@ This document outlines the process for releasing a new version of the project.
   description = "A simple data harvester."
   # ...
   ```
+- [ ] **Set Default Harvester Image:**
+    Update the [default-harvester-values](./env/default-harvester-values) to include the tagged release version of the harvester.
+    ```sh
+    export HARVESTER_IMAGE=quay.io/redhat-ai-dev/feedback-harvester:v0.1.0
+    ```
 - [ ] **Commit Changes:** Commit the version changes to your new branch.
 
 ## Release Steps
@@ -23,11 +28,6 @@ This document outlines the process for releasing a new version of the project.
     export TAG=v0.1.0
     make build-harvester
     podman push quay.io/redhat-ai-dev/feedback-harvester:$TAG
-    ```
-- [ ] **Set Default Harvester Image:**
-    Update the [default-harvester-values](./env/default-harvester-values) to include the tagged release version of the harvester.
-    ```sh
-    export HARVESTER_IMAGE=quay.io/redhat-ai-dev/feedback-harvester:v0.1.0
     ```
 - [ ] **Create GitHub Release:**
     - Go to the [github.com/redhat-ai-dev/rcs-support/releases](https://github.com/redhat-ai-dev/rcs-support/releases) and draft a new release.
