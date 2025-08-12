@@ -114,15 +114,13 @@ def test_feedback_insertion_with_categories_scenarios(mock_connection_pool, feed
 
     expected_query = "INSERT INTO feedback (user_id, timestamp, conversation_id, user_question, llm_response, sentiment, user_feedback, categories) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
     
-    # Verify the categories field in the args matches expected
     called_args = mock_cursor.execute.call_args[0][1]
-    assert called_args[7] == expected_categories  # categories is the 8th argument (index 7)
+    assert called_args[7] == expected_categories
     
-    # Also verify sentiment and user_feedback are handled correctly for missing scenarios
     if "sentiment" not in feedback_data:
-        assert called_args[5] is None  # sentiment should be None when missing
+        assert called_args[5] is None
     if "user_feedback" not in feedback_data:
-        assert called_args[6] is None  # user_feedback should be None when missing
+        assert called_args[6] is None
     
     mock_cursor.execute.assert_called_once_with(expected_query, called_args)
     mock_conn.commit.assert_called_once()
