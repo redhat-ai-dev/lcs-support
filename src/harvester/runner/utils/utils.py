@@ -9,6 +9,7 @@ class Feedback():
         self.llm_response = data.get("llm_response")
         self.sentiment = data.get("sentiment")
         self.user_feedback = data.get("user_feedback")
+        self.categories = data.get("categories")
 
         self._validate()
 
@@ -28,8 +29,9 @@ class Feedback():
             self.user_question,
             self.llm_response,
             self.sentiment,
-            self.user_feedback
+            self.user_feedback,
+            self.categories
         ]
     
     def get_query(self) -> str:
-        return "INSERT INTO feedback (user_id, timestamp, conversation_id, user_question, llm_response, sentiment, user_feedback) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        return "INSERT INTO feedback (user_id, timestamp, conversation_id, user_question, llm_response, sentiment, user_feedback, categories) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
