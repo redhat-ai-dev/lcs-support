@@ -12,15 +12,25 @@ class Feedback():
         self.categories = data.get("categories")
 
         self._validate()
-
+    
     def _validate(self) -> None:
-        if not self.user_id \
-        or not self.timestamp \
-        or not self.conversation_id \
-        or not self.user_question \
-        or not self.llm_response:
-            raise Exception("Values missing from query response.") #TODO: add better logging
+        response_str = "The following values are missing from the query response: "
+
+        if not self.user_id:
+            response_str += "user_id, "
+        if not self.timestamp:
+            response_str += "timestamp, "
+        if not self.conversation_id:
+            response_str += "conversation_id, "
+        if not self.user_question:
+            response_str += "user_question, "
+        if not self.llm_response:
+            response_str += "llm_response, "
         
+        if response_str[-2:] == ", ":
+            response_str = response_str[:-2]
+            raise Exception(response_str)
+
     def get_args(self) -> List[str | None]:
         return [
             self.user_id,
