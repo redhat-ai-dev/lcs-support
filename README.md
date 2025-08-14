@@ -1,4 +1,7 @@
-# Road-Core-Service (RCS) Support
+# Lightspeed-Core-Service (LCS) Support
+
+> [!IMPORTANT]
+> This repository is currently in development migrating from [Road Core](https://github.com/road-core/service) to [Lightspeed Core](https://github.com/lightspeed-core/lightspeed-stack). The Road Core specific source code can be found in the [road-core branch](https://github.com/redhat-ai-dev/rcs-support/tree/road-core), and [v0.1.0](https://github.com/redhat-ai-dev/rcs-support/releases/tag/v0.1.0) is the final stable release for Road Core related support.
 
 ## Requirements
 
