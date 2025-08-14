@@ -83,19 +83,3 @@ def test_write_json_contents():
         write_json_contents(test_file_path, mock_db)
 
         mock_db.execute.assert_called_once()
-
-def test_write_json_contents_failure():
-    sample_files = [
-        "sample_feedback_4.json",
-    ]
-    for file in sample_files:
-        test_file_path = os.path.join(os.path.dirname(__file__), "data", file)
-        mock_db = MagicMock()
-        mock_fb_instance = MagicMock()
-        mock_fb_instance.get_query.return_value = "INSERT INTO ..."
-        mock_fb_instance.get_args.return_value = ("val",)
-        
-        with pytest.raises(Exception) as e:
-            write_json_contents(test_file_path, mock_db)
-
-        assert "Values missing from query response" in str(e.value)

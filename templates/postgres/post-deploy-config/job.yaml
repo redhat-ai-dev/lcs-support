@@ -45,7 +45,8 @@ spec:
             user_question TEXT NOT NULL,
             llm_response TEXT NOT NULL,
             sentiment INTEGER,
-            user_feedback TEXT
+            user_feedback TEXT,
+            categories TEXT[]
           );
           EOF
       restartPolicy: OnFailure

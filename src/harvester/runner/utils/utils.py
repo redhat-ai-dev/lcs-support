@@ -9,17 +9,28 @@ class Feedback():
         self.llm_response = data.get("llm_response")
         self.sentiment = data.get("sentiment")
         self.user_feedback = data.get("user_feedback")
+        self.categories = data.get("categories")
 
         self._validate()
-
+    
     def _validate(self) -> None:
-        if not self.user_id \
-        or not self.timestamp \
-        or not self.conversation_id \
-        or not self.user_question \
-        or not self.llm_response:
-            raise Exception("Values missing from query response.") #TODO: add better logging
+        response_str = "The following values are missing from the query response: "
+
+        if not self.user_id:
+            response_str += "user_id, "
+        if not self.timestamp:
+            response_str += "timestamp, "
+        if not self.conversation_id:
+            response_str += "conversation_id, "
+        if not self.user_question:
+            response_str += "user_question, "
+        if not self.llm_response:
+            response_str += "llm_response, "
         
+        if response_str[-2:] == ", ":
+            response_str = response_str[:-2]
+            raise Exception(response_str)
+
     def get_args(self) -> List[str | None]:
         return [
             self.user_id,
@@ -28,8 +39,9 @@ class Feedback():
             self.user_question,
             self.llm_response,
             self.sentiment,
-            self.user_feedback
+            self.user_feedback,
+            self.categories
         ]
     
     def get_query(self) -> str:
-        return "INSERT INTO feedback (user_id, timestamp, conversation_id, user_question, llm_response, sentiment, user_feedback) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        return "INSERT INTO feedback (user_id, timestamp, conversation_id, user_question, llm_response, sentiment, user_feedback, categories) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"
