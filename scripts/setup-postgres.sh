@@ -35,16 +35,31 @@ setup_editing_env() {
     cp -r "$ROOTDIR"/templates/postgres/* "$ROOTDIR"/tmp-postgres/
 }
 
+configure_postgres_darwin() {
+    sed -i '' "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i '' "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i '' "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+}
+
+configure_postgres_linux() {
+    sed -i "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+}
+
 configure_and_apply_resources() {
     if kubectl get namespace dev-postgres >/dev/null 2>&1; then
         echo "Namespace 'dev-postgres' already exists, skipping resource creation ..."
         echo "[NOTICE] If you have updated the Postgres resources, you will need to run 'make remove-postgres' and then 'make deploy-postgres' to apply the changes."
         return
     fi
+    op_sys=$(uname -s)
     echo "Configuring Postgres resources ..."
-    sed -i "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    if [ "$op_sys" == "Darwin" ]; then
+        configure_postgres_darwin
+    else
+        configure_postgres_linux
+    fi
 
     echo "Applying Postgres resources ..."
     kubectl apply -k "$ROOTDIR"/tmp-postgres

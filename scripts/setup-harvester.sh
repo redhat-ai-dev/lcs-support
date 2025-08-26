@@ -44,13 +44,23 @@ configure_and_apply_resources() {
         return
     fi
 
+    op_sys=$(uname -s)
+
     if [ -z "$FETCH_FREQUENCY" ]; then
         yq -i '(.containers[].env) |= map(select(.name != "FETCH_FREQUENCY"))' "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
     else
-        sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        if [ "$op_sys" == "Darwin" ]; then
+            sed -i '' "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        else
+            sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        fi
     fi
     
-    sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    if [ "$op_sys" == "Darwin" ]; then
+        sed -i '' "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    else
+        sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    fi
 
     yq eval -i '
     .spec.deployment.patch.spec.template.spec.containers += load("'"${ROOTDIR}/tmp-harvester/harvester-setup.yaml"'").containers
