@@ -62,10 +62,15 @@ apply_resources() {
 }
 
 configure_sidecar_darwin() {
-    sed -i '' "s!sed.edit.RHDH_CONFIG_NAME!$RHDH_CONFIG_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i '' "s!sed.edit.RHDH_CONFIG_FILENAME!$RHDH_CONFIG_FILENAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i '' "s!sed.edit.RHDH_SECRETS_NAME!$RHDH_SECRETS_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i '' "s!sed.edit.RCS_IMAGE!$RCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_sidecar_linux
+    else
+        sed -i '' "s!sed.edit.RHDH_CONFIG_NAME!$RHDH_CONFIG_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RHDH_CONFIG_FILENAME!$RHDH_CONFIG_FILENAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RHDH_SECRETS_NAME!$RHDH_SECRETS_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RCS_IMAGE!$RCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    fi
 }
 
 configure_sidecar_linux() {

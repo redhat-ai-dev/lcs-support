@@ -35,16 +35,21 @@ setup_editing_env() {
     cp -r "$ROOTDIR"/templates/postgres/* "$ROOTDIR"/tmp-postgres/
 }
 
-configure_postgres_darwin() {
-    sed -i '' "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i '' "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i '' "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-}
-
 configure_postgres_linux() {
     sed -i "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
     sed -i "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
     sed -i "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+}
+
+configure_postgres_darwin() {
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_postgres_linux
+    else
+        sed -i '' "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+        sed -i '' "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+        sed -i '' "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    fi
 }
 
 configure_and_apply_resources() {

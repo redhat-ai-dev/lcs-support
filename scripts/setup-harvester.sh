@@ -37,6 +37,25 @@ setup_editing_env() {
     kubectl get -n "$RHDH_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp-harvester/backstage.yaml
 }
 
+configure_harvester_linux() {
+    if [ -n "$FETCH_FREQUENCY" ]; then
+        sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    fi
+    sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+}
+
+configure_harvester_darwin() {
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_harvester_linux
+    else
+        if [ -n "$FETCH_FREQUENCY" ]; then
+            sed -i '' "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        fi
+        sed -i '' "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    fi
+}
+
 configure_and_apply_resources() {
     if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "feedback-harvester"))' "$ROOTDIR"/tmp-harvester/backstage.yaml >/dev/null 2>&1; then
         echo "Harvester container 'feedback-harvester' already present in Backstage CR, skipping patch ..."
@@ -48,18 +67,12 @@ configure_and_apply_resources() {
 
     if [ -z "$FETCH_FREQUENCY" ]; then
         yq -i '(.containers[].env) |= map(select(.name != "FETCH_FREQUENCY"))' "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
-    else
-        if [ "$op_sys" == "Darwin" ]; then
-            sed -i '' "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
-        else
-            sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
-        fi
     fi
     
     if [ "$op_sys" == "Darwin" ]; then
-        sed -i '' "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        configure_harvester_darwin
     else
-        sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        configure_harvester_linux
     fi
 
     yq eval -i '
