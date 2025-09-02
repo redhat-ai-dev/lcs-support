@@ -36,9 +36,9 @@ setup_editing_env() {
 }
 
 configure_postgres_linux() {
-    sed -i "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-    sed -i "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i "s!sed.edit.PGUSER!'$PGUSER'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i "s!sed.edit.PGPASSWORD!'$PGPASSWORD'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+    sed -i "s!sed.edit.PGDATABASE!'$PGDATABASE'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
 }
 
 configure_postgres_darwin() {
@@ -46,9 +46,9 @@ configure_postgres_darwin() {
     if sed --version >/dev/null 2>&1; then
         configure_postgres_linux
     else
-        sed -i '' "s!sed.edit.PGUSER!$PGUSER!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-        sed -i '' "s!sed.edit.PGPASSWORD!$PGPASSWORD!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
-        sed -i '' "s!sed.edit.PGDATABASE!$PGDATABASE!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+        sed -i '' "s!sed.edit.PGUSER!'$PGUSER'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+        sed -i '' "s!sed.edit.PGPASSWORD!'$PGPASSWORD'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
+        sed -i '' "s!sed.edit.PGDATABASE!'$PGDATABASE'!g" "$ROOTDIR"/tmp-postgres/secret/secret.yaml
     fi
 }
 
