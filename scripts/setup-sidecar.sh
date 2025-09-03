@@ -61,6 +61,25 @@ apply_resources() {
     fi
 }
 
+configure_sidecar_darwin() {
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_sidecar_linux
+    else
+        sed -i '' "s!sed.edit.RHDH_CONFIG_NAME!$RHDH_CONFIG_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RHDH_CONFIG_FILENAME!$RHDH_CONFIG_FILENAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RHDH_SECRETS_NAME!$RHDH_SECRETS_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RCS_IMAGE!$RCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    fi
+}
+
+configure_sidecar_linux() {
+    sed -i "s!sed.edit.RHDH_CONFIG_NAME!$RHDH_CONFIG_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    sed -i "s!sed.edit.RHDH_CONFIG_FILENAME!$RHDH_CONFIG_FILENAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    sed -i "s!sed.edit.RHDH_SECRETS_NAME!$RHDH_SECRETS_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    sed -i "s!sed.edit.RCS_IMAGE!$RCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+}
+
 configure_and_apply_resources() {
     if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "road-core-sidecar"))' "$ROOTDIR"/tmp/backstage.yaml >/dev/null 2>&1; then
         echo "Sidecar container 'road-core-sidecar' already present in Backstage CR, skipping patch ..."
@@ -78,10 +97,12 @@ configure_and_apply_resources() {
         fi
     fi
 
-    sed -i "s!sed.edit.RHDH_CONFIG_NAME!$RHDH_CONFIG_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i "s!sed.edit.RHDH_CONFIG_FILENAME!$RHDH_CONFIG_FILENAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i "s!sed.edit.RHDH_SECRETS_NAME!$RHDH_SECRETS_NAME!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
-    sed -i "s!sed.edit.RCS_IMAGE!$RCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    op_sys=$(uname -s)
+    if [ "$op_sys" == "Darwin" ]; then
+        configure_sidecar_darwin
+    else
+        configure_sidecar_linux
+    fi
 
     yq eval -i '
     .spec.deployment.patch.spec.template.spec.containers += load("'"${ROOTDIR}/tmp/sidecar-setup.yaml"'").containers |

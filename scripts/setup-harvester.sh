@@ -37,6 +37,25 @@ setup_editing_env() {
     kubectl get -n "$RHDH_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp-harvester/backstage.yaml
 }
 
+configure_harvester_linux() {
+    if [ -n "$FETCH_FREQUENCY" ]; then
+        sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    fi
+    sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+}
+
+configure_harvester_darwin() {
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_harvester_linux
+    else
+        if [ -n "$FETCH_FREQUENCY" ]; then
+            sed -i '' "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+        fi
+        sed -i '' "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    fi
+}
+
 configure_and_apply_resources() {
     if yq -e '(.spec.deployment.patch.spec.template.spec.containers[] | select(.name == "feedback-harvester"))' "$ROOTDIR"/tmp-harvester/backstage.yaml >/dev/null 2>&1; then
         echo "Harvester container 'feedback-harvester' already present in Backstage CR, skipping patch ..."
@@ -44,13 +63,17 @@ configure_and_apply_resources() {
         return
     fi
 
+    op_sys=$(uname -s)
+
     if [ -z "$FETCH_FREQUENCY" ]; then
         yq -i '(.containers[].env) |= map(select(.name != "FETCH_FREQUENCY"))' "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
-    else
-        sed -i "s!sed.edit.FETCH_FREQUENCY!$FETCH_FREQUENCY!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
     fi
     
-    sed -i "s!sed.edit.HARVESTER_IMAGE!$HARVESTER_IMAGE!g" "$ROOTDIR"/tmp-harvester/harvester-setup.yaml
+    if [ "$op_sys" == "Darwin" ]; then
+        configure_harvester_darwin
+    else
+        configure_harvester_linux
+    fi
 
     yq eval -i '
     .spec.deployment.patch.spec.template.spec.containers += load("'"${ROOTDIR}/tmp-harvester/harvester-setup.yaml"'").containers
