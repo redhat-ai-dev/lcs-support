@@ -21,35 +21,38 @@ This setup script was tested with [Red Hat Developer Hub (RHDH) v1.4](https://do
 
 This repository holds multiple setup scripts you can use to deploy resources.
 
-1. [Road-Core-Service Backend Sidecar](#road-core-service-backend-sidecar)
-2. [Feedback Harvester](#feedback-harvester)
+1. [Lightspeed Core Service Sidecar](#lightspeed-core-service-sidecar)
+2. [Llama Stack Service](#llama-stack-service-sidecar)
+3. [Feedback Harvester](#feedback-harvester)
 
-## Road-Core-Service Backend Sidecar
+## Lightspeed Core Service Sidecar
 
-For information about the Road-Core-Service (RCS) Sidecar, including configuration and deployment, see [RCS-SIDECAR.md](./docs/rcs-sidecar/RCS-SIDECAR.md).
+For information about the Lightspeed Core Service (LCS) sidecar, including configuration and deployment, see [LCS-SIDECAR.md](./docs/lcs-sidecar/LCS-SIDECAR.md).
+
+
+## Llama Stack Service Sidecar
+
+For information about the Llama Stack Service sidecar, including configuration and deployment, see [LLAMA-STACK-SIDECAR.md](./docs/llama-stack/LLAMA-STACK-SIDECAR.md).
+
 
 ## Feedback Harvester
 
 For information about the Feedback Harvester, see [FEEDBACK-HARVESTER.md](./docs/feedback-harvester/FEEDBACK-HARVESTER.md).
 
-## Removing Resources
+## Make Commands
 
-You can remove any deployed resources by running their remove Make command:
-
-```
-make remove-sidecar
-```
-
-```
-make remove-harvester
-```
-
-```
-make remove-postgres
-```
-
-If you have the RCS sidecar, feedback harvester, and Postgres DB deployed you can remove them all with:
-
-```
-make remove-all
-```
+| Command | Description |
+|--------- | ---------- |
+| **generate-resources** | Creates copies of all required `.yaml` resource files for editing. |
+| **build-harvester** | Builds the Feedback Harvester image. |
+| **deploy-sidecars** | Deploys all of the sidecars (Lightspeed Core, Llama-Stack, and the Feedback Harvester). |
+| **deploy-lcs** | Deploys the Lightspeed Core sidecar. |
+| **deploy-llama-stack** | Deploys the Llama Stack sidecar. |
+| **deploy-harvester**| Deploys the Feedback Harvester sidecar. |
+| **deploy-postgres** | Deploys the PostgreSQL database. |
+| **remove-sidecars** | Removes all applicable sidecars added to the RHDH Deployment. |
+| **remove-lcs** | Removes the Lightspeed Core sidecar. |
+| **remove-llama-stack** | Removes the Llama Stack sidecar. |
+| **remove-harvester** | Removes the Feedback Harvester sidecar. |
+| **remove-postgres** | Removes the PostgreSQL database. |
+| **remove-all** | Removes all resources from all deploy commands (full wipe). |
