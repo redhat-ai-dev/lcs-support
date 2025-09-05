@@ -44,15 +44,13 @@ For information about the Feedback Harvester, see [FEEDBACK-HARVESTER.md](./docs
 | Command | Description |
 |--------- | ---------- |
 | **generate-resources** | Creates copies of all required `.yaml` resource files for editing. |
+| **generate-env** | Create copies of all required `.env` files for local editing. |
+| **generate-all** | Run both `generate-rsources` and `generate-env`. |
 | **build-harvester** | Builds the Feedback Harvester image. |
-| **deploy-sidecars** | Deploys all of the sidecars (Lightspeed Core, Llama-Stack, and the Feedback Harvester). |
-| **deploy-lcs** | Deploys the Lightspeed Core sidecar. |
-| **deploy-llama-stack** | Deploys the Llama Stack sidecar. |
+| **deploy-lcs** | Deploys the Lightspeed Core and Llama Stack sidecars. |
 | **deploy-harvester**| Deploys the Feedback Harvester sidecar. |
 | **deploy-postgres** | Deploys the PostgreSQL database. |
-| **remove-sidecars** | Removes all applicable sidecars added to the RHDH Deployment. |
-| **remove-lcs** | Removes the Lightspeed Core sidecar. |
-| **remove-llama-stack** | Removes the Llama Stack sidecar. |
+| **remove-lcs** | Removes the Lightspeed Core and Llama Stack sidecars. |
 | **remove-harvester** | Removes the Feedback Harvester sidecar. |
 | **remove-postgres** | Removes the PostgreSQL database. |
 | **remove-all** | Removes all resources from all deploy commands (full wipe). |

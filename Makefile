@@ -8,6 +8,13 @@ PLATFORM ?= linux/amd64
 generate-resources: 
 	bash ./scripts/generate-resources.sh
 
+.PHONY: generate-env
+generate-env:
+	bash ./scripts/generate-env.sh
+
+.PHONY: generate-all
+generate-all: generate-resources generate-env
+
 # Builds
 .PHONY: build-harvester
 build-harvester: 
@@ -26,25 +33,10 @@ deploy-harvester:
 deploy-lcs:
 	bash ./scripts/setup-lcs.sh
 
-.PHONY: deploy-llama-stack
-deploy-llama-stack:
-	bash ./scripts/setup-llama-stack.sh
-
-.PHONY: deploy-sidecars
-deploy-sidecars: deploy-lcs deploy-llama-stack deploy-harveser
-
 # Removals
-.PHONY: remove-sidecars
-remove-sidecars:
-	bash ./scripts/remove-sidecars.sh
-
 .PHONY: remove-lcs
 remove-lcs:
 	bash ./scripts/remove-lcs.sh
-
-.PHONY: remove-llama-stack
-remove-llama-stack:
-	bash ./scripts/remove-llama-stack.sh
 
 .PHONY: remove-harvester
 remove-harvester:
@@ -55,4 +47,4 @@ remove-postgres:
 	bash ./scripts/remove-postgres.sh
 
 .PHONY: remove-all
-remove-all: remove-sidecars remove-postgres
+remove-all: remove-lcs remove-harvester remove-postgres
