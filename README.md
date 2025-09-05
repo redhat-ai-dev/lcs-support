@@ -21,19 +21,16 @@ This setup script was tested with [Red Hat Developer Hub (RHDH) v1.4](https://do
 
 This repository holds multiple setup scripts you can use to deploy resources.
 
-1. [Lightspeed Core Service Sidecar](#lightspeed-core-service-sidecar)
-2. [Llama Stack Service](#llama-stack-service-sidecar)
-3. [Feedback Harvester](#feedback-harvester)
+1. [Lightspeed Core Service Sidecar](#lightspeed-core-service-and-llama-stack-service-sidecars)
+2. [Feedback Harvester](#feedback-harvester)
 
-## Lightspeed Core Service Sidecar
+## Lightspeed Core Service and Llama Stack Service Sidecars
+
+When using the setup capabilities of this repository, Lightspeed Core and Llama Stack will be deployed together, each as a separate service. 
+
+The Llama Stack image is built from [https://github.com/redhat-ai-dev/llama-stack](https://github.com/redhat-ai-dev/llama-stack) and contains the latest needs of our team.
 
 For information about the Lightspeed Core Service (LCS) sidecar, including configuration and deployment, see [LCS-SIDECAR.md](./docs/lcs-sidecar/LCS-SIDECAR.md).
-
-
-## Llama Stack Service Sidecar
-
-For information about the Llama Stack Service sidecar, including configuration and deployment, see [LLAMA-STACK-SIDECAR.md](./docs/llama-stack/LLAMA-STACK-SIDECAR.md).
-
 
 ## Feedback Harvester
 
