@@ -3,25 +3,25 @@ containers:
   - envFrom:
     - secretRef:
         name: llama-stack-secrets
-  image: 'quay.io/redhat-ai-dev/llama-stack:latest'
-  name: llama-stack
-  volumeMounts:
-    - mountPath: /app-root/.llama
-      name: shared-storage
-- image: sed.edit.LCS_IMAGE
-  name: lightspeed-core
-  volumeMounts:
-    - mountPath: /app-root/lightspeed-stack.yaml
-      name: lightspeed-stack
-      subPath: lightspeed-stack.yaml
-    - mountPath: /tmp/data/feedback
-      name: shared-storage
+    image: 'quay.io/redhat-ai-dev/llama-stack:latest'
+    name: llama-stack
+    volumeMounts:
+      - mountPath: /app-root/.llama
+        name: shared-storage
+  - image: sed.edit.LCS_IMAGE
+    name: lightspeed-core
+    volumeMounts:
+      - mountPath: /app-root/lightspeed-stack.yaml
+        name: lightspeed-stack
+        subPath: lightspeed-stack.yaml
+      - mountPath: /tmp/data/feedback
+        name: shared-storage
 volumes:
-- configMap:
+  - configMap:
+      name: lightspeed-stack
     name: lightspeed-stack
-  name: lightspeed-stack
-- emptyDir: {}
-  name: shared-storage
-- name: llama-stack-secrets
-  secret:
-    secretName: llama-stack-secrets
+  - emptyDir: {}
+    name: shared-storage
+  - name: llama-stack-secrets
+    secret:
+      secretName: llama-stack-secrets

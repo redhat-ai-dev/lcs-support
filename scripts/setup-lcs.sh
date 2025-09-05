@@ -44,7 +44,7 @@ apply_resources() {
     if kubectl get secret llama-stack-secrets -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
         echo "Secret 'llama-stack-secrets' already exists, skipping creation ..."
     else
-        kubectl create secret generic llama-stack-secrets \
+        kubectl create secret generic llama-stack-secrets -n $DEPLOYMENT_NAMESPACE \
             --from-literal=VLLM_URL="$VLLM_URL" \
             --from-literal=VLLM_API_KEY="$VLLM_API_KEY"
     fi
