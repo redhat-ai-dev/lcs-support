@@ -1,9 +1,6 @@
 # [REQUIRED] The namespace where RHDH is installed.
 export DEPLOYMENT_NAMESPACE=
 
-# [REQUIRED] This is the image registry where your built Lightspeed Core image is located.
-export LCS_IMAGE=
-
 # [REQUIRED] This is the name of your Backstage CR that is located in the $DEPLOYMENT_NAMESPACE.
 export BACKSTAGE_CR_NAME=
 
@@ -12,3 +9,7 @@ export VLLM_URL=
 
 # [REQUIRED] The token for accessing your vLLM server.
 export VLLM_API_KEY=
+
+# [OPTIONAL] This is the image registry where your built Lightspeed Core image is located.
+# If unset, defaults to: quay.io/lightspeed-core/lightspeed-stack:dev-latest
+export LCS_IMAGE=

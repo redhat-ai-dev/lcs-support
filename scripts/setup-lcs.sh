@@ -9,14 +9,17 @@ ROOTDIR=$(realpath $SCRIPTDIR/..)
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
 
+DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-latest"
+
 env_var_checks() {
     if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
         echo "DEPLOYMENT_NAMESPACE unset in environment variables file. Aborting ..."
         exit 1
     fi
     if [ -z "$LCS_IMAGE" ]; then
-        echo "LCS_IMAGE unset in environment variables file. Aborting ..."
-        exit 1
+        echo "LCS_IMAGE unset in environment variables file ..."
+        echo "Defaulting to $DEFAULT_LCS_IMAGE ..."
+        LCS_IMAGE=$DEFAULT_LCS_IMAGE
     fi
     if [ -z "$BACKSTAGE_CR_NAME" ]; then
         echo "BACKSTAGE_CR_NAME unset in environment variables file. Aborting ..."
