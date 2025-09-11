@@ -25,14 +25,6 @@ env_var_checks() {
         echo "BACKSTAGE_CR_NAME unset in environment variables file. Aborting ..."
         exit 1
     fi
-    if [ -z "$VLLM_URL" ]; then
-        echo "VLLM_URL unset in environment variables file. Aborting ..."
-        exit 1
-    fi
-    if [ -z "$VLLM_API_KEY" ]; then
-        echo "VLLM_API_KEY unset in environment variables file. Aborting ..."
-        exit 1
-    fi
 }
 
 setup_editing_env() {
@@ -43,13 +35,11 @@ setup_editing_env() {
 
 apply_resources() {
     echo "Applying resources to $DEPLOYMENT_NAMESPACE namespace ..."
-    cp "$ROOTDIR"/resources/lightspeed-stack.yaml "$ROOTDIR"/tmp/
+    cp "$ROOTDIR"/resources/* "$ROOTDIR"/tmp/
     if kubectl get secret llama-stack-secrets -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
         echo "Secret 'llama-stack-secrets' already exists, skipping creation ..."
     else
-        kubectl create secret generic llama-stack-secrets -n $DEPLOYMENT_NAMESPACE \
-            --from-literal=VLLM_URL="$VLLM_URL" \
-            --from-literal=VLLM_API_KEY="$VLLM_API_KEY"
+        kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR/tmp/lightspeed-secret.yaml"
     fi
 
     if kubectl get configmap lightspeed-stack -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
