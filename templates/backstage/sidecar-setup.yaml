@@ -22,6 +22,3 @@ volumes:
     name: lightspeed-stack
   - emptyDir: {}
     name: shared-storage
-  - name: llama-stack-secrets
-    secret:
-      secretName: llama-stack-secrets
