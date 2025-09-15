@@ -3,7 +3,7 @@ containers:
   - envFrom:
     - secretRef:
         name: llama-stack-secrets
-    image: 'quay.io/redhat-ai-dev/llama-stack:latest'
+    image: sed.edit.LLS_IMAGE
     name: llama-stack
     volumeMounts:
       - mountPath: /app-root/.llama

@@ -10,10 +10,15 @@ echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
 
 DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-latest"
+DEFAULT_LLS_IMAGE="quay.io/redhat-ai-dev/llama-stack:latest"
 
 env_var_checks() {
     if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
         echo "DEPLOYMENT_NAMESPACE unset in environment variables file. Aborting ..."
+        exit 1
+    fi
+    if [ -z "$BACKSTAGE_CR_NAME" ]; then
+        echo "BACKSTAGE_CR_NAME unset in environment variables file. Aborting ..."
         exit 1
     fi
     if [ -z "$LCS_IMAGE" ]; then
@@ -21,9 +26,10 @@ env_var_checks() {
         echo "Defaulting to $DEFAULT_LCS_IMAGE ..."
         LCS_IMAGE=$DEFAULT_LCS_IMAGE
     fi
-    if [ -z "$BACKSTAGE_CR_NAME" ]; then
-        echo "BACKSTAGE_CR_NAME unset in environment variables file. Aborting ..."
-        exit 1
+    if [ -z "$LLS_IMAGE" ]; then
+        echo "LLS_IMAGE unset in environment variables file ..."
+        echo "Defaulting to $DEFAULT_LLS_IMAGE ..."
+        LLS_IMAGE=$DEFAULT_LLS_IMAGE
     fi
 }
 
@@ -55,11 +61,13 @@ configure_sidecar_darwin() {
         configure_sidecar_linux
     else
         sed -i '' "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
     fi
 }
 
 configure_sidecar_linux() {
     sed -i "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    sed -i "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
 }
 
 configure_and_apply_resources() {
