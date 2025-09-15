@@ -12,7 +12,7 @@ By running:
 make generate-all
 ```
 
-These files are used by the script for properly setting up Lightspeed Core. `lightspeed-stack.yaml` is the configuration file for LCS and with a local copy you are able to make changes as you see fit. 'lightspeed-secret.yaml' is where you will enter your environment variables for Llama Stack, and the `values` file is used for injecting variables in the setup script.
+These files are used by the script for properly setting up Lightspeed Core. `lightspeed-stack.yaml` is the configuration file for LCS and with a local copy you are able to make changes as you see fit. `lightspeed-secret.yaml` is where you will enter your environment variables for Llama Stack, and the `values` file is used for injecting variables in the setup script.
 
 ## Configuration
 
