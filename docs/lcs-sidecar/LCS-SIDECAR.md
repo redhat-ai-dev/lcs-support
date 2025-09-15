@@ -38,7 +38,7 @@ make deploy-lcs
 
 ## Teardown
 
-To remove the Lightspeed Core sidecar:
+To remove the Lightspeed Core & Llama Stack sidecar containers:
 
 ```
 make remove-lcs
