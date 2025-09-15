@@ -30,7 +30,7 @@ user_data_collection:
 
 ## Deployment
 
-To deploy the Lightspeed Core sidecar:
+To deploy the Lightspeed Core & Llama Stack sidecar containers:
 
 ```
 make deploy-lcs
