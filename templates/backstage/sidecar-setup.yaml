@@ -8,6 +8,11 @@ containers:
     volumeMounts:
       - mountPath: /app-root/.llama
         name: shared-storage
+    # LLAMA_OVERRIDE_MOUNT_START
+      - mountPath: /app-root/run.yaml
+        subPath: run.yaml
+        name: llama-stack-config
+    # LLAMA_OVERRIDE_MOUNT_END
   - image: sed.edit.LCS_IMAGE
     name: lightspeed-core
     volumeMounts:
@@ -22,3 +27,8 @@ volumes:
     name: lightspeed-stack
   - emptyDir: {}
     name: shared-storage
+  # LLAMA_OVERRIDE_VOLUME_START
+  - configMap:
+      name: llama-stack-config
+    name: llama-stack-config
+  # LLAMA_OVERRIDE_VOLUME_END

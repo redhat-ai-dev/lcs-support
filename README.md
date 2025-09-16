@@ -28,7 +28,7 @@ This repository holds multiple setup scripts you can use to deploy resources.
 
 When using the setup capabilities of this repository, Lightspeed Core and Llama Stack will be deployed together, each as a separate service. 
 
-The Llama Stack image is built from [https://github.com/redhat-ai-dev/llama-stack](https://github.com/redhat-ai-dev/llama-stack) and contains the latest needs of our team.
+The Llama Stack image is built from [https://github.com/redhat-ai-dev/llama-stack](https://github.com/redhat-ai-dev/llama-stack) and contains the latest needs of our team. You can override the `run.yaml` that is built into this image by adding your desired `run.yaml` file (named as `run.yaml`) to the `/resources` directory.
 
 For information about the Lightspeed Core Service (LCS) sidecar, including configuration and deployment, see [LCS-SIDECAR.md](./docs/lcs-sidecar/LCS-SIDECAR.md).
 
