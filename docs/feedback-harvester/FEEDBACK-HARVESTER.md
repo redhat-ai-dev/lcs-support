@@ -2,9 +2,11 @@
 
 To enable the collection of feedback data we must deploy both a harvester sidecar and a PostgreSQL database.
 
-You will need to ensure that the steps in [Road-Core-Service Backend Sidecar](../rcs-sidecar/RCS-SIDECAR.md) have been completed. The deployment and use of the Feedback Harvester builds on top of the Road Core Service (RCS) Sidecar. 
+You will need to ensure that the steps in [Lightspeed Core Service Sidecar](../lcs-sidecar/LCS-SIDECAR.md) have been completed. The deployment and use of the Feedback Harvester builds on top of the Lightspeed Core Service (LCS) Sidecar. 
 
 After those steps are complete you can:
+
+**Note:** If you ran `make generate-all` as part of the Lightspeed Core setup, you will already have a copy of `default-harvester-values`. If you do not, you can run `make generate-env`.
 
 1. Create a local copy of necessary environment variables:
    1. Create a copy of [default-harvester-values](../../env/default-harvester-values) in [/env](../../env/) named `harvester-values`.

@@ -3,7 +3,24 @@ IMAGE_NAME ?= quay.io/redhat-ai-dev/feedback-harvester
 FULL_NAME = $(IMAGE_NAME):$(TAG)
 PLATFORM ?= linux/amd64
 
+# Generations
+.PHONY: generate-resources
+generate-resources: 
+	bash ./scripts/generate-resources.sh
 
+.PHONY: generate-env
+generate-env:
+	bash ./scripts/generate-env.sh
+
+.PHONY: generate-all
+generate-all: generate-resources generate-env
+
+# Builds
+.PHONY: build-harvester
+build-harvester: 
+	podman build --platform=$(PLATFORM) -t $(FULL_NAME) -f src/harvester/Containerfile
+
+# Deployments
 .PHONY: deploy-postgres
 deploy-postgres: 
 	bash ./scripts/setup-postgres.sh
@@ -12,21 +29,14 @@ deploy-postgres:
 deploy-harvester:
 	bash ./scripts/setup-harvester.sh
 
-.PHONY: deploy-sidecar
-deploy-sidecar: 
-	bash ./scripts/setup-sidecar.sh
+.PHONY: deploy-lcs
+deploy-lcs:
+	bash ./scripts/setup-lcs.sh
 
-.PHONY: generate-resources
-generate-resources: 
-	bash ./scripts/generate-resources.sh
-
-.PHONY: build-harvester
-build-harvester: 
-	podman build --platform=$(PLATFORM) -t $(FULL_NAME) -f src/harvester/Containerfile
-
-.PHONY: remove-sidecar
-remove-sidecar:
-	bash ./scripts/remove-sidecar.sh
+# Removals
+.PHONY: remove-lcs
+remove-lcs:
+	bash ./scripts/remove-lcs.sh
 
 .PHONY: remove-harvester
 remove-harvester:
@@ -37,4 +47,4 @@ remove-postgres:
 	bash ./scripts/remove-postgres.sh
 
 .PHONY: remove-all
-remove-all: remove-harvester remove-postgres remove-sidecar
+remove-all: remove-lcs remove-harvester remove-postgres
