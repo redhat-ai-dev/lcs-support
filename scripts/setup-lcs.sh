@@ -53,6 +53,14 @@ apply_resources() {
     else
         kubectl create configmap lightspeed-stack --from-file="$ROOTDIR"/tmp/lightspeed-stack.yaml -n "$DEPLOYMENT_NAMESPACE"
     fi
+    if kubectl get configmap llama-stack-config -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
+        echo "ConfigMap 'llama-stack-config' already exists, skipping creation ..."
+    else
+        if [ -f "$ROOTDIR"/tmp/run.yaml ]; then
+            kubectl create configmap llama-stack-config --from-file="$ROOTDIR"/tmp/run.yaml -n "$DEPLOYMENT_NAMESPACE"
+        fi
+    fi
+    
 }
 
 configure_sidecar_darwin() {
@@ -62,12 +70,22 @@ configure_sidecar_darwin() {
     else
         sed -i '' "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
         sed -i '' "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        
+        if [ ! -f "$ROOTDIR"/tmp/run.yaml ]; then
+            sed -i '' '/# LLAMA_OVERRIDE_MOUNT_START/,/# LLAMA_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
+            sed -i '' '/# LLAMA_OVERRIDE_VOLUME_START/,/# LLAMA_OVERRIDE_VOLUME_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
+        fi
     fi
 }
 
 configure_sidecar_linux() {
     sed -i "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
     sed -i "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    
+    if [ ! -f "$ROOTDIR"/tmp/run.yaml ]; then
+        sed -i '/# LLAMA_OVERRIDE_MOUNT_START/,/# LLAMA_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '/# LLAMA_OVERRIDE_VOLUME_START/,/# LLAMA_OVERRIDE_VOLUME_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
+    fi
 }
 
 configure_and_apply_resources() {

@@ -11,7 +11,7 @@ echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
 
 CONTAINERS_TO_REMOVE=("lightspeed-core" "llama-stack")
-VOLUMES_TO_REMOVE=("lightspeed-stack" "shared-storage" "llama-stack-secrets")
+VOLUMES_TO_REMOVE=("lightspeed-stack" "shared-storage" "llama-stack-secrets" "llama-stack-config")
 ORIGINAL_CR_FILE="$ROOTDIR/tmp/backstage.yaml"
 
 
@@ -53,6 +53,7 @@ remove_sidecar_resources() {
 
     echo "Removing lightspeed-stack Config Map and llama-stack-secrets Secret ..."
     kubectl delete configmap lightspeed-stack -n "$DEPLOYMENT_NAMESPACE" --ignore-not-found=true
+    kubectl delete configmap llama-stack-config -n "$DEPLOYMENT_NAMESPACE" --ignore-not-found=true
     kubectl delete secret llama-stack-secrets -n "$DEPLOYMENT_NAMESPACE" --ignore-not-found=true
     echo "Successfully removed lightspeed-stack Config Map and llama-stack-secrets Secret ..."
 }
