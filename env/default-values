@@ -11,3 +11,7 @@ export LCS_IMAGE=
 # [OPTIONAL] This is the image registry where your built Llama Stack image is located.
 # If unset, defaults to: quay.io/redhat-ai-dev/llama-stack:latest
 export LLS_IMAGE=
+
+# [OPTIONAL] This is the image registry where your built RHDH RAG data is located.
+# If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.7-lcs
+export RAG_IMAGE=

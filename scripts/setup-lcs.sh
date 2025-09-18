@@ -11,6 +11,7 @@ source "$ROOTDIR"/env/values
 
 DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-latest"
 DEFAULT_LLS_IMAGE="quay.io/redhat-ai-dev/llama-stack:latest"
+DEFAULT_RAG_IMAGE="quay.io/redhat-ai-dev/rag-content:release-1.7-lcs"
 
 env_var_checks() {
     if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
@@ -30,6 +31,11 @@ env_var_checks() {
         echo "LLS_IMAGE unset in environment variables file ..."
         echo "Defaulting to $DEFAULT_LLS_IMAGE ..."
         LLS_IMAGE=$DEFAULT_LLS_IMAGE
+    fi
+    if [ -z "$RAG_IMAGE" ]; then
+        echo "RAG_IMAGE unset in environment variables file ..."
+        echo "Defaulting to $DEFAULT_RAG_IMAGE ..."
+        RAG_IMAGE=$DEFAULT_RAG_IMAGE
     fi
 }
 
@@ -70,6 +76,7 @@ configure_sidecar_darwin() {
     else
         sed -i '' "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
         sed -i '' "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+        sed -i '' "s!sed.edit.RAG_IMAGE!$RAG_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
         
         if [ ! -f "$ROOTDIR"/tmp/run.yaml ]; then
             sed -i '' '/# LLAMA_OVERRIDE_MOUNT_START/,/# LLAMA_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
@@ -81,6 +88,7 @@ configure_sidecar_darwin() {
 configure_sidecar_linux() {
     sed -i "s!sed.edit.LCS_IMAGE!$LCS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
     sed -i "s!sed.edit.LLS_IMAGE!$LLS_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
+    sed -i "s!sed.edit.RAG_IMAGE!$RAG_IMAGE!g" "$ROOTDIR"/tmp/sidecar-setup.yaml
     
     if [ ! -f "$ROOTDIR"/tmp/run.yaml ]; then
         sed -i '/# LLAMA_OVERRIDE_MOUNT_START/,/# LLAMA_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/sidecar-setup.yaml
@@ -109,6 +117,7 @@ configure_and_apply_resources() {
     fi
 
     yq eval -i '
+    .spec.deployment.patch.spec.template.spec.initContainers += load("'"${ROOTDIR}/tmp/sidecar-setup.yaml"'").initContainers |
     .spec.deployment.patch.spec.template.spec.containers += load("'"${ROOTDIR}/tmp/sidecar-setup.yaml"'").containers |
     .spec.deployment.patch.spec.template.spec.volumes += load("'"${ROOTDIR}/tmp/sidecar-setup.yaml"'").volumes
     ' "$ROOTDIR"/tmp/backstage.yaml
