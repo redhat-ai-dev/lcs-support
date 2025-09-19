@@ -1,4 +1,14 @@
 ---
+initContainers:
+  - name: init-rag-data
+    image: sed.edit.RAG_IMAGE
+    command:
+      - "sh"
+      - "-c"
+      - "echo 'Copying RAG data...'; cp -r /rag/vector_db/rhdh_product_docs /data/ && cp -r /rag/embeddings_model /data/ && echo 'Copy complete.'"
+    volumeMounts:
+      - mountPath: /data
+        name: rag-data-volume
 containers:
   - envFrom:
     - secretRef:
@@ -8,6 +18,12 @@ containers:
     volumeMounts:
       - mountPath: /app-root/.llama
         name: shared-storage
+      - mountPath: /app-root/embeddings_model
+        name: rag-data-volume
+        subPath: embeddings_model
+      - mountPath: /app-root/vector_db/rhdh_product_docs
+        name: rag-data-volume
+        subPath: rhdh_product_docs
     # LLAMA_OVERRIDE_MOUNT_START
       - mountPath: /app-root/run.yaml
         subPath: run.yaml
@@ -27,6 +43,8 @@ volumes:
     name: lightspeed-stack
   - emptyDir: {}
     name: shared-storage
+  - emptyDir: {}
+    name: rag-data-volume
   # LLAMA_OVERRIDE_VOLUME_START
   - configMap:
       name: llama-stack-config
