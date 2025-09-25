@@ -14,6 +14,9 @@ make generate-all
 
 These files are used by the script for properly setting up Lightspeed Core. `lightspeed-stack.yaml` is the configuration file for LCS and with a local copy you are able to make changes as you see fit. `lightspeed-secret.yaml` is where you will enter your environment variables for Llama Stack, and the `values` file is used for injecting variables in the setup script.
 
+> [!IMPORTANT]
+> You must ensure you have `VALIDATION_PROVIDER` and `VALIDATION_MODEL_NAME` set in the Secret, as well as one of `VLLM_URL + VLLM_API_KEY`, `OLLAMA_URL` or `OPENAI_API_KEY`, depending on the provider you have enabled in your Llama Stack `run.yaml`. By default (if you are not overriding it), you will need to set `VLLM_URL` and `VLLM_API_KEY`.
+
 ## Configuration
 
 Lightspeed Core is always evolving, currently you can alter the following in your version of `lightspeed-stack.yaml` to change the functionality:
