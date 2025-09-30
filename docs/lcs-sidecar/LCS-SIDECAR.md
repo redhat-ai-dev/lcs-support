@@ -16,6 +16,8 @@ These files are used by the script for properly setting up Lightspeed Core. `lig
 
 > [!IMPORTANT]
 > You must ensure you have `VALIDATION_PROVIDER` and `VALIDATION_MODEL_NAME` set in the Secret, as well as one of `VLLM_URL + VLLM_API_KEY`, `OLLAMA_URL` or `OPENAI_API_KEY`, depending on the provider you have enabled in your Llama Stack `run.yaml`. By default (if you are not overriding it), you will need to set `VLLM_URL` and `VLLM_API_KEY`.
+>
+> `VALIDATION_PROVIDER` can currently be one of `vllm, ollama, or openai`, depending on what provider you are using in your `run.yaml`.
 
 ## Configuration
 
