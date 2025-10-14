@@ -33,6 +33,23 @@ user_data_collection:
   feedback_storage: "/tmp/data/feedback"
 ```
 
+### Conversation History
+
+By default, the conversation history is being stored in SQLite through Lightspeed Core. You can use PostgreSQL instead by replacing the `conversation_cache` entry in your copy of `lightspeed-stack.yaml` in `/resources` with the following:
+
+```
+conversation_cache: 
+  type: "postgres"
+  postgres:
+    host: <your-hostname>
+    port: <port>
+    db: "lightspeed_cache"
+    user: "cache_user"
+    password: "your_password"
+```
+
+
+
 ## Deployment
 
 To deploy the Lightspeed Core & Llama Stack sidecar containers:

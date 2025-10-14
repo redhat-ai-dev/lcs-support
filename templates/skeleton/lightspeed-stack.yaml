@@ -14,3 +14,7 @@ user_data_collection:
   feedback_storage: "/tmp/data/feedback"
 authentication:
   module: "noop"
+conversation_cache:
+  type: "sqlite"
+  sqlite:
+    db_path: "/tmp/cache.db"
