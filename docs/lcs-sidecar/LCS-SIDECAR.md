@@ -43,7 +43,9 @@ conversation_cache:
   postgres:
     host: <your-hostname>
     port: <port>
-    db: "lightspeed_cache"
+    db: <your-db>
+    user: <your-username>
+    password: <your-password>
     user: "cache_user"
     password: "your_password"
 ```
