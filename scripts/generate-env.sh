@@ -5,5 +5,4 @@ ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 echo "Creating copy of environment files in $ROOTDIR/env ..."
 cp "$ROOTDIR/env/default-values" "$ROOTDIR/env/values"
-cp "$ROOTDIR/env/default-harvester-values" "$ROOTDIR/env/harvester-values"
 echo "Files generated ..."

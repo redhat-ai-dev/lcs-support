@@ -6,22 +6,22 @@ set -o errtrace
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
-echo "Sourcing values from $ROOTDIR/env/harvester-values ..."
-source "$ROOTDIR"/env/harvester-values
-
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
+
+DEFAULT_HARVESTER_IMAGE="quay.io/redhat-ai-dev/feedback-harvester:latest"
 
 env_var_checks() {
     if [ -z "$FETCH_FREQUENCY" ]; then
         echo "FETCH_FREQUENCY unset in environment variables file. Harvester will use its default value ..."
     fi
     if [ -z "$HARVESTER_IMAGE" ]; then
-        echo "HARVESTER_IMAGE unset in environment variables file. Aborting ..."
-        exit 1
+        echo "HARVESTER_IMAGE unset in environment variables file ..."
+        echo "Defaulting to $DEFAULT_HARVESTER_IMAGE ..."
+        HARVESTER_IMAGE=$DEFAULT_HARVESTER_IMAGE
     fi
-    if [ -z "$RHDH_NAMESPACE" ]; then
-        echo "RHDH_NAMESPACE unset in environment variables file. Aborting ..."
+    if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
+        echo "DEPLOYMENT_NAMESPACE unset in environment variables file. Aborting ..."
         exit 1
     fi
     if [ -z "$BACKSTAGE_CR_NAME" ]; then
@@ -34,7 +34,7 @@ env_var_checks() {
 setup_editing_env() {
     mkdir "$ROOTDIR"/tmp-harvester
     cp "$ROOTDIR"/templates/backstage/harvester-setup.yaml "$ROOTDIR"/tmp-harvester/
-    kubectl get -n "$RHDH_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp-harvester/backstage.yaml
+    kubectl get -n "$DEPLOYMENT_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp-harvester/backstage.yaml
 }
 
 configure_harvester_linux() {
@@ -80,7 +80,7 @@ configure_and_apply_resources() {
     ' "$ROOTDIR"/tmp-harvester/backstage.yaml
 
     echo "Patching Backstage CR ..."
-    kubectl apply -n "$RHDH_NAMESPACE" -f "$ROOTDIR"/tmp-harvester/backstage.yaml
+    kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR"/tmp-harvester/backstage.yaml
     echo "Successfully patched Backstage CR ..."
 }
 

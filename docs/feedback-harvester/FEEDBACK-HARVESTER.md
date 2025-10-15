@@ -6,10 +6,10 @@ You will need to ensure that the steps in [Lightspeed Core Service Sidecar](../l
 
 After those steps are complete you can:
 
-**Note:** If you ran `make generate-all` as part of the Lightspeed Core setup, you will already have a copy of `default-harvester-values`. If you do not, you can run `make generate-env`.
+**Note:** If you ran `make generate-all` as part of the Lightspeed Core setup, you will already have a copy of `default-values`. If you do not, you can run `make generate-env`.
 
 1. Create a local copy of necessary environment variables:
-   1. Create a copy of [default-harvester-values](../../env/default-harvester-values) in [/env](../../env/) named `harvester-values`.
+   1. Create a copy of [default-values](../../env/default-values) in [/env](../../env/) named `values`.
    2. Populate the values following the instructions within the file.
 2. Run the following command to deploy PostgreSQL and add the required Secret to your Red Hat Developer Hub (RHDH) namespace:
 ```
