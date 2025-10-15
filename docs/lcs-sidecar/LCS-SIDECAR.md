@@ -46,8 +46,6 @@ conversation_cache:
     db: <your-db>
     user: <your-username>
     password: <your-password>
-    user: "cache_user"
-    password: "your_password"
 ```
 
 
