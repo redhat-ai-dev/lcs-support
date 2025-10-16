@@ -48,6 +48,28 @@ conversation_cache:
     password: <your-password>
 ```
 
+### Setting Up PostgreSQL For Conversation History
+
+> [!IMPORTANT]
+>
+> You can leverage the PostgreSQL database setup that is part of this repository to easily spin up a PostgreSQL instance.
+
+1. Ensure the Postgres values are set in your `env/values` file.
+2. Run `make deploy-postgres`.
+3. Make sure your `conversation_cache` section in your `lightspeed-stack.yaml` file is updated:
+```
+conversation_cache: 
+  type: "postgres"
+  postgres:
+    host: postgres-svc.dev-postgres.svc.cluster.local
+    port: 5432
+    db: <your PGDATABASE value>
+    user: <your PGUSER value>
+    password: <your PGPASSWORD value>
+```
+
+**Note:** It is important to ensure you place the values for `PGDATABASE`, `PGUSER`, and `PGPASSWORD` in the `lightspeed-stack.yaml` file. The environment variables are not expanded in Lightspeed Core and as such we cannot pass them as such at this time.
+
 
 
 ## Deployment
