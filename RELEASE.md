@@ -14,7 +14,7 @@ This document outlines the process for releasing a new version of the project.
   # ...
   ```
 - [ ] **Set Default Harvester Image:**
-    Update the [default-harvester-values](./env/default-harvester-values) to include the tagged release version of the harvester.
+    Update [default-values](./env/default-values) to include the tagged release version of the harvester.
     ```sh
     export HARVESTER_IMAGE=quay.io/redhat-ai-dev/feedback-harvester:v0.1.0
     ```

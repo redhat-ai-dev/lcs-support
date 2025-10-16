@@ -6,8 +6,8 @@ set -o errtrace
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
-echo "Sourcing values from $ROOTDIR/env/harvester-values ..."
-source "$ROOTDIR"/env/harvester-values
+echo "Sourcing values from $ROOTDIR/env/values ..."
+source "$ROOTDIR"/env/values
 
 env_var_checks() {
     if [ -z "$PGUSER" ]; then
@@ -22,8 +22,8 @@ env_var_checks() {
         echo "PGDATABASE unset in environment variables file. Aborting ..."
         exit 1
     fi
-    if [ -z "$RHDH_NAMESPACE" ]; then
-        echo "RHDH_NAMESPACE unset in environment variables file. Aborting ..."
+    if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
+        echo "DEPLOYMENT_NAMESPACE unset in environment variables file. Aborting ..."
         exit 1
     fi
 
@@ -68,7 +68,7 @@ configure_and_apply_resources() {
 
     echo "Applying Postgres resources ..."
     kubectl apply -k "$ROOTDIR"/tmp-postgres
-    kubectl apply -n "$RHDH_NAMESPACE" -f "$ROOTDIR/tmp-postgres/secret/secret.yaml"
+    kubectl apply -n "$DEPLOYMENT_NAMESPACE" -f "$ROOTDIR/tmp-postgres/secret/secret.yaml"
     echo "Successfully applied Postgres resources ..."
 }
 
