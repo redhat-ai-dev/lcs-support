@@ -28,4 +28,4 @@ containers:
     name: feedback-harvester
     volumeMounts:
       - mountPath: /app-root/tmp/data/feedback
-        name: shared-data
+        name: shared-storage

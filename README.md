@@ -42,7 +42,7 @@ For information about the Feedback Harvester, see [FEEDBACK-HARVESTER.md](./docs
 |--------- | ---------- |
 | **generate-resources** | Creates copies of all required `.yaml` resource files for editing. |
 | **generate-env** | Create copies of all required `.env` files for local editing. |
-| **generate-all** | Run both `generate-rsources` and `generate-env`. |
+| **generate-all** | Run both `generate-resources` and `generate-env`. |
 | **build-harvester** | Builds the Feedback Harvester image. |
 | **deploy-lcs** | Deploys the Lightspeed Core and Llama Stack sidecars. |
 | **deploy-harvester**| Deploys the Feedback Harvester sidecar. |
