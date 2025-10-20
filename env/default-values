@@ -11,15 +11,15 @@ export BACKSTAGE_CR_NAME=
 #################################
 
 # This is the image registry where your built Lightspeed Core image is located.
-# If unset, defaults to: quay.io/lightspeed-core/lightspeed-stack:dev-latest
+# If unset, defaults to: quay.io/redhat-ai-dev/lightspeed-stack:PR-643
 export LCS_IMAGE=
 
 # This is the image registry where your built Llama Stack image is located.
-# If unset, defaults to: quay.io/redhat-ai-dev/llama-stack:latest
+# If unset, defaults to: quay.io/redhat-ai-dev/llama-stack:2a1f9e6bed2fbf48e7c43ec456bbdb2a47236823
 export LLS_IMAGE=
 
 # This is the image registry where your built RHDH RAG data is located.
-# If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.7-lcs
+# If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.7-lcs-64368ddd25845856b44790317203279f92287006
 export RAG_IMAGE=
 
 ### FEEDBACK HARVESTER VARIABLES ###
