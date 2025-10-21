@@ -9,7 +9,7 @@ ROOTDIR=$(realpath $SCRIPTDIR/..)
 echo "Sourcing values from $ROOTDIR/env/values ..."
 source "$ROOTDIR"/env/values
 
-DEFAULT_LCS_IMAGE="quay.io/redhat-ai-dev/lightspeed-stack:PR-643"
+DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-20251021-ee9f08f"
 DEFAULT_LLS_IMAGE="quay.io/redhat-ai-dev/llama-stack:6b98aa4ac2178e35d33ef0078bb948202e7dfabc"
 DEFAULT_RAG_IMAGE="quay.io/redhat-ai-dev/rag-content:release-1.7-lcs-64368ddd25845856b44790317203279f92287006"
 
