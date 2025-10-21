@@ -18,3 +18,9 @@ conversation_cache:
   type: "sqlite"
   sqlite:
     db_path: "/tmp/cache.db"
+# MCP_OVERRIDE_MOUNT_START
+mcp_servers:
+  - name: sed.edit.MCP_SERVER_NAME
+    provider_id: model-context-protocol
+    url: sed.edit.MCP_SERVER_URL
+# MCP_OVERRIDE_MOUNT_END

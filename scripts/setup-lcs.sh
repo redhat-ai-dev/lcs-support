@@ -13,6 +13,8 @@ DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-latest"
 DEFAULT_LLS_IMAGE="quay.io/redhat-ai-dev/llama-stack:latest"
 DEFAULT_RAG_IMAGE="quay.io/redhat-ai-dev/rag-content:release-1.7-lcs"
 
+op_sys=$(uname -s)
+
 env_var_checks() {
     if [ -z "$DEPLOYMENT_NAMESPACE" ]; then
         echo "DEPLOYMENT_NAMESPACE unset in environment variables file. Aborting ..."
@@ -45,6 +47,29 @@ setup_editing_env() {
     kubectl get -n "$DEPLOYMENT_NAMESPACE" Backstage "$BACKSTAGE_CR_NAME" -o yaml > "$ROOTDIR"/tmp/backstage.yaml
 }
 
+configure_lcs_stack_darwin() {
+    # Mac users with gnu-sed will trigger --version, Darwin sed does not support
+    if sed --version >/dev/null 2>&1; then
+        configure_lcs_stack_linux
+    else
+        if [[ -z "$MCP_SERVER_NAME" || -z "$MCP_SERVER_URL" ]]; then
+            sed -i '' '/# MCP_OVERRIDE_MOUNT_START/,/# MCP_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/lightspeed-stack.yaml
+        else
+            sed -i '' "s!sed.edit.MCP_SERVER_NAME!$MCP_SERVER_NAME!g" "$ROOTDIR"/tmp/lightspeed-stack.yaml
+            sed -i '' "s!sed.edit.MCP_SERVER_URL!$MCP_SERVER_URL!g" "$ROOTDIR"/tmp/lightspeed-stack.yaml
+        fi
+    fi
+}
+
+configure_lcs_stack_linux() {
+    if [[ -z "$MCP_SERVER_NAME" || -z "$MCP_SERVER_URL" ]]; then
+        sed -i '/# MCP_OVERRIDE_MOUNT_START/,/# MCP_OVERRIDE_MOUNT_END/d' "$ROOTDIR"/tmp/lightspeed-stack.yaml
+    else
+        sed -i "s!sed.edit.MCP_SERVER_NAME!$MCP_SERVER_NAME!g" "$ROOTDIR"/tmp/lightspeed-stack.yaml
+        sed -i "s!sed.edit.MCP_SERVER_URL!$MCP_SERVER_URL!g" "$ROOTDIR"/tmp/lightspeed-stack.yaml  
+    fi
+}
+
 apply_resources() {
     echo "Applying resources to $DEPLOYMENT_NAMESPACE namespace ..."
     cp "$ROOTDIR"/resources/* "$ROOTDIR"/tmp/
@@ -57,6 +82,11 @@ apply_resources() {
     if kubectl get configmap lightspeed-stack -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
         echo "ConfigMap 'lightspeed-stack' already exists, skipping creation ..."
     else
+        if [ "$op_sys" == "Darwin" ]; then
+            configure_lcs_stack_darwin
+        else
+            configure_lcs_stack_linux
+        fi
         kubectl create configmap lightspeed-stack --from-file="$ROOTDIR"/tmp/lightspeed-stack.yaml -n "$DEPLOYMENT_NAMESPACE"
     fi
     if kubectl get configmap llama-stack-config -n "$DEPLOYMENT_NAMESPACE" >/dev/null 2>&1; then
@@ -109,7 +139,6 @@ configure_and_apply_resources() {
         return
     fi
 
-    op_sys=$(uname -s)
     if [ "$op_sys" == "Darwin" ]; then
         configure_sidecar_darwin
     else
@@ -130,6 +159,8 @@ configure_and_apply_resources() {
 cleanup() {
     rm -rf "$ROOTDIR"/tmp
 }
+
+echo "Detected OS is $op_sys"
 
 env_var_checks
 trap cleanup ERR
