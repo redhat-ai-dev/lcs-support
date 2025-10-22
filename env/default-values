@@ -1,3 +1,4 @@
+######################
 ### RHDH VARIABLES ###
 ######################
 
@@ -7,6 +8,7 @@ export DEPLOYMENT_NAMESPACE=
 # This is the name of your Backstage CR that is located in the $DEPLOYMENT_NAMESPACE.
 export BACKSTAGE_CR_NAME=
 
+#################################
 ### LIGHTSPEED CORE VARIABLES ###
 #################################
 
@@ -22,6 +24,19 @@ export LLS_IMAGE=
 # If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.7-lcs
 export RAG_IMAGE=
 
+######################################
+### MCP SERVER SETUP IN LCS CONFIG ###
+######################################
+
+# This is the MCP Server Name that appears on the lightspeed-stack.yaml.
+# It should match with the MCP Server name set in the Lightspeed Plugin app-config.
+export MCP_SERVER_NAME=
+# The MCP Server URL where the MCP Tool Actions are deployed.
+# Example: https://<RHDH_HOST>/api/mcp-actions/v1
+# or https://<RHDH_HOST>/api/mcp-actions/v1/sse
+export MCP_SERVER_URL=
+
+####################################
 ### FEEDBACK HARVESTER VARIABLES ###
 ####################################
 
@@ -31,6 +46,7 @@ export HARVESTER_IMAGE=
 # If unset, defaults to 15 minutes.
 export FETCH_FREQUENCY=
 
+##########################
 ### POSTGRES VARIABLES ###
 ##########################
 

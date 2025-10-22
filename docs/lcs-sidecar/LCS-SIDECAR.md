@@ -48,6 +48,10 @@ conversation_cache:
     password: <your-password>
 ```
 
+### MCP Server Setup
+
+To enable MCP Server in `lightspeed-stack.yaml`, set the `MCP_SERVER_NAME` and `MCP_SERVER_URL`. 
+
 ### Setting Up PostgreSQL For Conversation History
 
 > [!IMPORTANT]
