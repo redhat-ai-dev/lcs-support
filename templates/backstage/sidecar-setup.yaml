@@ -37,6 +37,10 @@ containers:
         subPath: lightspeed-stack.yaml
       - mountPath: /tmp/data/feedback
         name: shared-storage
+      - mountPath: /tmp/data/conversations
+        name: shared-storage
+      - mountPath: /tmp/data/transcripts
+        name: shared-storage
 volumes:
   - configMap:
       name: lightspeed-stack

@@ -21,7 +21,7 @@ export LCS_IMAGE=
 export LLS_IMAGE=
 
 # This is the image registry where your built RHDH RAG data is located.
-# If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.7-lcs
+# If unset, defaults to: quay.io/redhat-ai-dev/rag-content:release-1.8-lcs
 export RAG_IMAGE=
 
 ######################################
