@@ -11,7 +11,7 @@ source "$ROOTDIR"/env/values
 
 DEFAULT_LCS_IMAGE="quay.io/lightspeed-core/lightspeed-stack:dev-latest"
 DEFAULT_LLS_IMAGE="quay.io/redhat-ai-dev/llama-stack:latest"
-DEFAULT_RAG_IMAGE="quay.io/redhat-ai-dev/rag-content:release-1.7-lcs"
+DEFAULT_RAG_IMAGE="quay.io/redhat-ai-dev/rag-content:release-1.8-lcs"
 
 op_sys=$(uname -s)
 
