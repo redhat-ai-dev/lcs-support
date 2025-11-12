@@ -12,12 +12,14 @@ llama_stack:
 user_data_collection:
   feedback_enabled: true
   feedback_storage: "/tmp/data/feedback"
+  transcripts_enabled: true
+  transcripts_storage: "/tmp/data/transcripts"
 authentication:
   module: "noop"
 conversation_cache:
   type: "sqlite"
   sqlite:
-    db_path: "/tmp/cache.db"
+    db_path: "/tmp/data/conversations/cache.db"
 # MCP_OVERRIDE_MOUNT_START
 mcp_servers:
   - name: sed.edit.MCP_SERVER_NAME
